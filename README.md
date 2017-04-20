@@ -20,7 +20,7 @@ Ibotta take-home app listening on port 3000`
 6. In a separate terminal window in BASE_DIR type `npm test` at command line will run Mocha and Chai-based automated tests.
 
 
-#Requirements
+# Requirements
 The fundamental purpose of this project was to provide a number of endpoints
 related to anagrams of words in a large dictionary of words.
 * Add words to dictionary.
