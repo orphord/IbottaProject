@@ -11,13 +11,13 @@ The decision to use Node.js was based on two ideas,
 0. The code for this project uses Node.js v.7.9 and npm v.4.2 -- please install these to properly run the code
 1. Go to a directory where you would like to install the code, we'll call it BASE_DIR.
 2. (Assuming you have git installed) `git clone https://github.com/orphord/IbottaProject.git` at command line
-3. `npm install` at command line, wait for install to happen
-4. `npm start` at command line.  If server starts correctly, message should appear as follows:
+3. In BASE_DIR type `npm install` at command line, wait for install to happen
+4. In BASE_DIR type `npm start` at command line.  If server starts correctly, message should appear as follows:
 `Init function called.
 Ibotta take-home app listening on port 3000`
 4. In a browser `http://localhost:3000/anagrams/dear.json` is a good initial test to see the server work.
 5. You can run the ruby tests that had been supplied as part of the project initiation (not included in my submission).
-6. In a separate terminal window `npm test` at command line will run Mocha and Chai-based automated tests.
+6. In a separate terminal window in BASE_DIR type `npm test` at command line will run Mocha and Chai-based automated tests.
 
 
 #Requirements
