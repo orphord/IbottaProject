@@ -1,5 +1,5 @@
-//const fileLoc = __dirname + '/data/dictionary.txt';
-const fileLoc = __dirname + '/data/nada.txt'; // to test dictionary validity
+const fileLoc = __dirname + '/data/dictionary.txt';
+//const fileLoc = __dirname + '/data/nada.txt'; // to test dictionary validity
 //const fileLoc = __dirname + '/data/headDict.txt'; // used for prototyping
 //const fileLoc = __dirname + '/data/YourMom.txt'; // used to test missing file
 
