@@ -7,8 +7,7 @@ var bodyParser = require('body-parser');
 /**
  * Add the words in the 'words' array into the dictionary file.
  */
-router.post('/words.json', function(req, res) {
-	
+router.post('/words.json', function(req, res) {	
 	// loop thru words from request and add to corpus
   req.body.words.forEach( (word) => {
 		if(typeof lib.dictionary[word.toLowerCase()] === 'undefined') {
@@ -28,24 +27,33 @@ router.get('/anagrams/:word.json', function(req, res) {
 	var inclProper = req.query.inclProper === 'y' ? true : false;
 
 	// Get set of anagrams from dictionary
-	var anagramsToReturn = lib.anagrams(req.params.word, inclProper);
-	if(!isNaN(lim)) { // Handle limit parameter by slicing first lim values
-		anagramsToReturn = anagramsToReturn.slice(0, lim);
+	try{
+		var anagramsToReturn = lib.anagrams(req.param.word, inclProper);
+		if(!isNaN(lim)) { // Handle limit parameter by slicing first lim values
+			anagramsToReturn = anagramsToReturn.slice(0, lim);
+		}
+
+		var returnVal = {'anagrams': 
+										 anagramsToReturn
+										};
+
+		res.status(200).json(returnVal);
+	} catch(err) {
+		console.log('ERROR OCCURRED on anagrams: ' , err);
 	}
 
-	var returnVal = {'anagrams': 
-									 anagramsToReturn
-									};
-
-	res.status(200).json(returnVal);
 });
 
 /**
  * Deletes the word passed as a parameter from the corpus.
  */
 router.delete('/words/:word.json', function(req, res) {
-	lib.deleteWord(req.params.word);
-	res.status(200).json();
+	try {
+		lib.deleteWord(req.params.word);
+		res.status(200).json();
+	} catch(err) {
+		console.log('ERROR OCCURRED on delete: ', err);
+	}
 });
 
 /**
@@ -70,8 +78,12 @@ router.get('/statistics', function(req, res) {
  * Deletes a word and all it's anagrams from the corpus.
  */
 router.delete('/anagrams/:word.json', function(req, res) {
-	lib.deleteAnagrams(req.params.word);
-	res.status(204).json();
+	try {
+		lib.deleteAnagrams(req.params.word);
+		res.status(204).json();
+	} catch(err) {
+		console.log('ERROR OCCURRED on delete anagrams: ', err);
+	}
 });
 
 /**
@@ -101,16 +113,23 @@ router.post('/anagrams/words.json', function(req, res) {
 router.post('/anagrams/most.json', function(req, res) {
 	var wordsArr = req.body.words;
 
-	var returnVal = lib.mostAnagrams(wordsArr);
-	res.status(200).json(returnVal);
+	try {
+		var returnVal = lib.mostAnagrams(wordsArr);
+		res.status(200).json(returnVal);
+	} catch(err) {
+		console.log('ERROR OCCURED on finding which word had most anagrams: ', err);
+	}
 });
 
 router.post('/anagrams/min.json', function(req, res) {
 	var wordsArr = req.body.words;
 	var minLen = req.body.minLen;
-	var returnVal = lib.minAnagrams(wordsArr, minLen);
-
-	res.status(200).json(returnVal);
+	try {
+		var returnVal = lib.minAnagrams(wordsArr, minLen);
+		res.status(200).json(returnVal);
+	} catch(err) {
+		console.log('ERROR OCCURRED on finding min number of anagrams: ', err);
+	}
 });
 
 module.exports = router;

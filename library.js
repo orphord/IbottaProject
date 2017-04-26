@@ -1,6 +1,7 @@
-const fileLoc = __dirname + '/data/dictionary.txt';
-//const fileLoc = __dirname + '/data/headDict.txt';
-//const fileLoc = __dirname + '/data/YourMom.txt';
+//const fileLoc = __dirname + '/data/dictionary.txt';
+const fileLoc = __dirname + '/data/nada.txt'; // to test dictionary validity
+//const fileLoc = __dirname + '/data/headDict.txt'; // used for prototyping
+//const fileLoc = __dirname + '/data/YourMom.txt'; // used to test missing file
 
 const JFile = require('jfile');
 const infile = new JFile(fileLoc);
@@ -18,7 +19,11 @@ module.exports.initDictionary = function() {
 	
 	// Open dictionary.txt file in data/ and read contents into assoc array
 	try {
-		infile.lines.forEach( (line) => dict[line.toLowerCase()] = line);
+		infile.lines.forEach( (line) => 
+													{ 
+														if(line !== '')
+															dict[line.toLowerCase()] = line;
+													} );
 	} catch(ex) {
 		console.log('An error occurred trying to get data from dictionary file.');
 		console.log(ex.toString());
@@ -34,7 +39,13 @@ module.exports.initDictionary = function() {
  *   parameter that exist in the dictionary corpus (not including word itself).
  */
 function anagrams(word, inclProper) {
+	// Validate dictionary exists
+	if(!dictIsValid()) {
+		throw "Dictionary is not valid!";
+	}
+
 	console.log('anagrams function called: ', word);
+
 	var permutationsOfWord = permute(word).slice(1); // don't include word itself
 	var outVal = [];
 	var i = 0;
@@ -200,13 +211,15 @@ module.exports.minAnagrams = function(wordList, minLength) {
  * Function to return the longest word length in the dictionary.
  */
 function longest() {
-	// Validate dictionary exists and is populated
-	if(dict !== null && dict !== 'undefined' && Object.keys(dict).length > 0) {
-		// find longest length word
-		return Object.values(dict).reduce(function(a, b) {
-			return a.length > b.length ? a : b;
-		}).length;
-	}
+	// Validate dictionary exists
+	if(!dictIsValid()) {
+		throw "Dictionary is not valid!";
+ 	}
+
+	// find longest length word
+	return Object.values(dict).reduce(function(a, b) {
+		return a.length > b.length ? a : b;
+	}).length;
 
 }
 
@@ -214,13 +227,14 @@ function longest() {
  * Function to return the shortest word length in the dictionary.
  */
 function shortest() {
-	// Validate dictionary exists and is populated
-	if(dict !== null && dict !== 'undefined' && Object.keys(dict).length > 0) {
-		// find shortest length word
-		return Object.values(dict).reduce(function(a, b) {
-			return a.length < b.length ? a : b;
-		}).length;
+	// Validate dictionary exists
+	if(!dictIsValid()) {
+		throw "Dictionary is not valid!";
 	}
+	// find shortest length word
+	return Object.values(dict).reduce(function(a, b) {
+		return a.length < b.length ? a : b;
+	}).length;
 
 }
 
@@ -231,10 +245,9 @@ function shortest() {
  * if the word lengths was [10, 5, 4, 2] => 4.5 would be returned.
  */
 function medianLen() {
-
-	// Validate dictionary state
-	if(dict === null || dict === 'undefined' || Object.keys(dict).length === 0) {
-		return null;
+	// Validate dictionary exists
+	if(!dictIsValid()) {
+		throw "Dictionary is not valid!";
 	}
 
 	// Sort array by length
@@ -258,9 +271,9 @@ function medianLen() {
  * value returned will be rounded to the .0000 spot.
  */
 function averageLen() {
-	// Validate dictionary state
-	if(dict === null || dict === 'undefined' || Object.keys(dict).length === 0) {
-		return null;
+	// Validate dictionary exists
+	if(!dictIsValid()) {
+		throw "Dictionary is not valid!";
 	}
 
 	// Attempt to use reduce() function
@@ -282,4 +295,21 @@ function averageLen() {
 	avg = avg.toFixed(4);
 
 	return avg;
+}
+
+
+/**
+ * Validates dictionary state.  If dictionary is not initialized properly an
+ * error will be raised.
+ */
+function dictIsValid() {
+console.log('DICT IS VALID called. Len: ', dict.length, '; Dict: ', dict);
+	let outVal = true;
+	if(dict === null || dict === 'undefined' || dict.length === undefined
+		 || dict.length < 1) {
+		outVal = false;
+	}
+
+console.log('DICT IS VALID returns: ', outVal);
+	return outVal;
 }
