@@ -303,13 +303,16 @@ function averageLen() {
  * error will be raised.
  */
 function dictIsValid() {
-console.log('DICT IS VALID called. Len: ', dict.length, '; Dict: ', dict);
+	console.log('dictIsValid() function called.');
 	let outVal = true;
-	if(dict === null || dict === 'undefined' || dict.length === undefined
-		 || dict.length < 1) {
+	if(dict === null || dict === 'undefined' 
+		 || Object.keys(dict).length === undefined) {
+		console.log('DICT', Object.keys(dict).length);
 		outVal = false;
+
+	} else {
+		console.log('DICT.length', Object.keys(dict).length);
 	}
 
-console.log('DICT IS VALID returns: ', outVal);
 	return outVal;
 }

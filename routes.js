@@ -28,7 +28,7 @@ router.get('/anagrams/:word.json', function(req, res) {
 
 	// Get set of anagrams from dictionary
 	try{
-		var anagramsToReturn = lib.anagrams(req.param.word, inclProper);
+		var anagramsToReturn = lib.anagrams(req.params.word, inclProper);
 		if(!isNaN(lim)) { // Handle limit parameter by slicing first lim values
 			anagramsToReturn = anagramsToReturn.slice(0, lim);
 		}
